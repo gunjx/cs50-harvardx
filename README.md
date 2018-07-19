@@ -1,6 +1,6 @@
 # README
 
-A collection of programs written in C and Python. The programs are in order from less to more difficult. All programs were created as solutions to the problem sets of Harvard University's online course: CS50's Introduction to Computer Science. Via lectures and problem sets the course teaches students how to think algorithmically and solve problems efficiently.
+A collection of programs written in C and Python. The programs are in order from less to more difficult. All programs were created as solutions to the problem sets of Harvard University's online course: CS50's Introduction to Computer Science. In lectures and problem sets the course teaches students how to think algorithmically and solve problems efficiently.
 
 In many cases the CS50 staff provides a rudimentary structure for the solutions. Therefore the programs below are often a mix between code that is provided and my code as part of the solution to the problem sets. More information about CS50: https://docs.cs50.net/2018/spring/syllabus/cscie50.html.
 
@@ -36,22 +36,22 @@ Getting familiar with data types, arithmetic operators and loops.
 
 ## Crack
 
-A program that cracks password hashes with a maximum of five characters.
+A program that cracks passwords with a maximum of five characters.
 
 ### Theory
 
 Assuming you somehow got possession of a file in a linux system called /etc/shadow, which contains usernames and hashed passwords, you could attempt to crack the users' passwords using brute force.
 
-Here is an example list of what /etc/shadow might look like (formatting username:hash):
-brian:50mjprEcqC/ts
-stelios:51u8F0dkeDSbY
-maria:509nVI8B9VfuA
-zamyla:50cI2vYkF0YU2
-anushree:50xcIMJ0y.RXo
-natmelo:50JIIyhDORqMU
-rob:50JGnXUgaafgc
-malan:50CcfIk1QrPr6
-lloyd:50n0AAUD.pL8g
+Here is an example list of what /etc/shadow might look like (formatting username:hash):\
+brian:50mjprEcqC/ts\
+stelios:51u8F0dkeDSbY\
+maria:509nVI8B9VfuA\
+zamyla:50cI2vYkF0YU2\
+anushree:50xcIMJ0y.RXo\
+natmelo:50JIIyhDORqMU\
+rob:50JGnXUgaafgc\
+malan:50CcfIk1QrPr6\
+lloyd:50n0AAUD.pL8g\
 bjbrown:50GApilQSG3E2
 
 Further assumptions:
