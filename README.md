@@ -137,7 +137,7 @@ Notes are identified by letters (A through G), accidentals (# and b) and octaves
 
 To ultimately synthesize a song, it is also important to know the duration of a note as well as the duration of rests in a song. These are typically expressed in eights of a note.
 
-With this system you can write down for instance the birthday song:
+With this system you can write down for instance the birthday song:\
 D4@1/8
 D4@1/8
 E4@1/4
@@ -208,7 +208,7 @@ Learn about call stacks, File I/O, pointers, dynamic memory allocation and the h
 
 ## Speller
 
-A program that spell-checks a file.
+A program that spell-checks text-files
 
 ### Features
 
@@ -229,7 +229,7 @@ Uncover C structs, custom types definition, data structures, arrays, linked list
 
 ## Similarities
 
-A program that compares similarities across files.
+A program that compares similarities across two files.
 
 ### Theory
 
