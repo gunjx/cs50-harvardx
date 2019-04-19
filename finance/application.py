@@ -102,7 +102,7 @@ def login():
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("login.html")
+        return render_template("login.html.j2")
 
 
 @app.route("/logout")
@@ -126,7 +126,51 @@ def quote():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
-    return apology("TODO")
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+        username, password, password_confirm = [
+            value for key, value in request.form.items()
+        ]
+
+        # Ensure username was submitted
+        if not username:
+            return apology("must provide username", 403)
+
+        # Ensure password was submitted
+        elif not password:
+            return apology("must provide password", 403)
+
+        # Ensure password confirmation was submitted
+        elif not password_confirm:
+            return apology("must provide password confirmation", 403)
+
+        # Ensure password and password confirmation match
+        elif not password == password_confirm:
+            return apology("password and password confirmation must match", 403)
+
+        # Generate password hash
+        hash = generate_password_hash(password)
+
+        # Insert user to database
+        id = db.execute(
+            "INSERT INTO users (username, hash) VALUES (:username, :hash)",
+            username=username,
+            hash=hash,
+        )
+
+        # Check if username already exists
+        if not id:
+            return apology("username already taken", 403)
+
+        # Skip login and directly remember registered user
+        session["user_id"] = id
+
+        # Redirect user to home page
+        return redirect("/")
+
+    else:
+        return render_template("register.html.j2")
 
 
 @app.route("/sell", methods=["GET", "POST"])
