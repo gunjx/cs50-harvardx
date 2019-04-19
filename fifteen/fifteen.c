@@ -252,7 +252,7 @@ bool won(void)
     {
         for (int j = 0; j < d; j++)
         {
-            // check if board values are in the correct order
+            // check if board values are in order from 1 to 8
             if (board[i][j] == k)
                 k++;
 
