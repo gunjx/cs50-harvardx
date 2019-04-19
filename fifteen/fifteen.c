@@ -54,7 +54,7 @@ int main(int argc, string argv[])
     if (d < DIM_MIN || d > DIM_MAX)
     {
         printf("Board must be between %i x %i and %i x %i, inclusive.\n",
-            DIM_MIN, DIM_MIN, DIM_MAX, DIM_MAX);
+               DIM_MIN, DIM_MIN, DIM_MAX, DIM_MAX);
         return 2;
     }
 
@@ -177,8 +177,8 @@ void init(void)
     // swap last two tiles if d is even
     if (d % 2 == 0)
     {
-        board[d-1][d-2]++;
-        board[d-1][d-3]--;
+        board[d - 1][d - 2]++;
+        board[d - 1][d - 3]--;
     }
 }
 
@@ -188,16 +188,17 @@ void init(void)
 void draw()
 {
     // draw the two dimensional board
-        for (int i = 0; i < d; i++)
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
         {
-            for (int j = 0; j < d; j++)
-            {
-                if (board[i][j] == '\0')
+            if (board[i][j] == '\0')
                 printf("%2c ", 95);
-                else printf("%2i ", board[i][j]);
-            }
-            printf("\n");
+            else
+                printf("%2i ", board[i][j]);
         }
+        printf("\n");
+    }
 }
 
 /**
@@ -220,11 +221,10 @@ bool move(int tile)
                 tcol = j;
             }
         }
-
     }
 
     // check if tile and blank are next to each other
-    if ( ( (abs (trow - brow) == 1) & (tcol == bcol) ) ^ ( (abs (tcol - bcol) == 1)  & (trow == brow) ) )
+    if (((abs(trow - brow) == 1) & (tcol == bcol)) ^ ((abs(tcol - bcol) == 1) & (trow == brow)))
     {
         // swap selected tile with blank
         board[brow][bcol] = board[trow][tcol];
@@ -257,11 +257,12 @@ bool won(void)
                 k++;
 
             // check if blank is in last board field
-            else if (i == j && j == d-1 && board[i][j] == '\0')
+            else if (i == j && j == d - 1 && board[i][j] == '\0')
                 return true;
 
             // else terminate both loops
-            else i = j = d;
+            else
+                i = j = d;
         }
     }
 

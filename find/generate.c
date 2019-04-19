@@ -34,17 +34,17 @@ int main(int argc, string argv[])
     // If user inputs seed as second command-line argument, call function srand48 with that seed, else call srand48 with seconds passed since Epoch
     if (argc == 3)
     {
-        srand48((long) atoi(argv[2]));
+        srand48((long)atoi(argv[2]));
     }
     else
     {
-        srand48((long) time(NULL));
+        srand48((long)time(NULL));
     }
 
     // Print as many random (integer) numbers as the user specified as command-line argument
     for (int i = 0; i < n; i++)
     {
-        printf("%i\n", (int) (drand48() * LIMIT));
+        printf("%i\n", (int)(drand48() * LIMIT));
     }
 
     // Success

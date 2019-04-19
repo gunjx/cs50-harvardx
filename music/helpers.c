@@ -18,9 +18,7 @@
 
 // Notes in an octave
 const string NOTEX[] = {"C", "C#", "D", "D#", "E", "F",
-                        "F#", "G", "G#", "A", "A#", "B"
-                       };
-
+                        "F#", "G", "G#", "A", "A#", "B"};
 
 // Convert a fraction formatted as X/Y to eighths
 int duration(string fraction)
@@ -48,7 +46,8 @@ int frequency(string note)
         mod = -1;
         oct = note[2] - '0';
     }
-    else oct = note[1] - '0';
+    else
+        oct = note[1] - '0';
 
     // Setting up index relative to A
     int index = 0;
@@ -56,15 +55,15 @@ int frequency(string note)
     for (int i = 0; (NOTEX[i][0]) != '\0'; i++)
     {
         if (letter == NOTEX[i][0])
-            {
-                index = i - APOS;
-                break;
-            }
+        {
+            index = i - APOS;
+            break;
+        }
     }
 
     // Final conversion into frequency
     float exponent = (oct - OCTAVE) + (mod + index) / 12.0;
-    return round (BASEFREQ * pow (2, exponent));
+    return round(BASEFREQ * pow(2, exponent));
 }
 
 // Determines whether a string represents a rest
@@ -72,5 +71,6 @@ bool is_rest(string s)
 {
     if (s[0] == '\0')
         return true;
-    else return false;
+    else
+        return false;
 }

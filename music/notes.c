@@ -9,8 +9,7 @@
 
 // Notes in an octave
 const string NOTES[] = {"C", "C#", "D", "D#", "E", "F",
-                        "F#", "G", "G#", "A", "A#", "B"
-                       };
+                        "F#", "G", "G#", "A", "A#", "B"};
 
 // Default octave
 #define OCTAVE 4
