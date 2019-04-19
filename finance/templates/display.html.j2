@@ -1,0 +1,10 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+    Display
+{% endblock %}
+
+{% block main %}
+    <p>A share of {{ name }} ({{ symbol }}) costs {{ price }}. </p>
+    <a href="/quote" class="btn btn-primary">Back</a>
+{% endblock %}

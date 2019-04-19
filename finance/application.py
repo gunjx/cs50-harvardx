@@ -92,7 +92,7 @@ def login():
         if len(rows) != 1 or not check_password_hash(
             rows[0]["hash"], request.form.get("password")
         ):
-            return apology("invalid username and/or password", 403)
+            return apology("invalid username and/or password", 401)
 
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
@@ -123,9 +123,30 @@ def logout():
 @login_required
 def quote():
     """Get stock quote."""
-        
+
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
+        symbol = request.form.get("symbol")
+
+        # Ensure any symbol was submitted
+        if not symbol:
+            return apology("must provide symbol", 403)
+
+        # Look up symbol on IEX
+        quote = lookup(symbol)
+
+        #
+        if not quote:
+            return apology("symbol not found", 404)
+
+        # Render diplay template with quote
+        name, price, symbol = quote.values()
+        return render_template(
+            "display.html.j2", name=name, price=usd(price), symbol=symbol
+        )
+
+    else:
+        return render_template("quote.html.j2")
 
 
 @app.route("/register", methods=["GET", "POST"])
