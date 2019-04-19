@@ -1,7 +1,6 @@
 import crypt
 import sys
 import itertools
-# import time
 
 # Magic numbers
 ALPHALEN = 26
@@ -14,8 +13,8 @@ def main():
         sys.exit(1)
 
     # Convert hash and salt from user input
-    var_salt = ''.join(sys.argv[1][:2])
-    var_hash = ''.join(sys.argv[1])
+    var_salt = "".join(sys.argv[1][:2])
+    var_hash = "".join(sys.argv[1])
 
     # Call last permutation first for efficiency reasons
     crack("AAAAA", var_hash, var_salt)
@@ -77,8 +76,7 @@ def crack(pw, var_hash, var_salt):
                                         for m in range(ALPHALEN):
                                             index[4] = m
                                             if len(pw) == 5:
-                                                check(pw, var_hash, var_salt,
-                                                      index)
+                                                check(pw, var_hash, var_salt, index)
 
 
 if __name__ == "__main__":
