@@ -97,6 +97,9 @@ def login():
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
 
+        # Create success notification
+        flash("Successfully logged in.")
+
         # Redirect user to home page
         return redirect("/")
 
@@ -120,7 +123,9 @@ def logout():
 @login_required
 def quote():
     """Get stock quote."""
-    return apology("TODO")
+        
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -165,6 +170,9 @@ def register():
 
         # Skip login and directly remember registered user
         session["user_id"] = id
+
+        # Create success notification
+        flash("Successfully registered.")
 
         # Redirect user to home page
         return redirect("/")
