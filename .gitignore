@@ -1,3 +1,15 @@
-*.dSYM
-.vscode
+# General
 .DS_Store
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Obj-C/Swift specific
+*.dSYM
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
