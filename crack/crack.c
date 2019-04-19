@@ -11,7 +11,7 @@ void check(char *pw, char *hash, char *salt, int *index);
 void crack(char *pw, char *hash, char *salt);
 
 // Converting command line arguments and calling crack function
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     // Check for command line argument
     if (argc != 2)
