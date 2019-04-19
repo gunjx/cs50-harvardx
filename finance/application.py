@@ -48,7 +48,43 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock"""
-    return apology("TODO")
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+        symbol, shares = request.form.values()
+
+        # Ensure any symbol was submitted
+        if not symbol:
+            return apology("must provide symbol", 403)
+
+        # Ensure any positive number of shares was submitted
+        if shares < 1:
+            return apology("must provide at least one share", 403)
+
+        # Ensure integer number was submitted
+        if not isinstance(shares, int):
+            return apology("must provide whole numbers for shares")
+
+        # Look up symbol on IEX
+        quote = lookup(symbol)
+
+        # Ensure symbol exists
+        if not quote:
+            return apology("symbol not found", 404)
+
+        # Calculate total value of purchase
+        price = quote.get("price")
+        total = price * shares
+
+        # Create success notification
+        flash(f"Successfully purchased {shares} shares of {symbol}")
+
+        # Redirect user to home page
+        return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("buy.html.j2")
 
 
 @app.route("/check", methods=["GET"])
@@ -135,7 +171,7 @@ def quote():
         # Look up symbol on IEX
         quote = lookup(symbol)
 
-        #
+        # Ensure symbol exists
         if not quote:
             return apology("symbol not found", 404)
 
@@ -145,6 +181,7 @@ def quote():
             "display.html.j2", name=name, price=usd(price), symbol=symbol
         )
 
+    # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("quote.html.j2")
 
@@ -196,6 +233,7 @@ def register():
         # Redirect user to home page
         return redirect("/")
 
+    # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html.j2")
 
