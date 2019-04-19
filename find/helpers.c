@@ -10,9 +10,7 @@
 
 #define MAX 65536
 
-/**
- * Recursive binary search.
- */
+// Prototype
 bool bisearch(int value, int values[], int left, int right, int n);
 
 /**
@@ -23,17 +21,10 @@ bool search(int value, int values[], int n)
     // Return false for non-negative integers
     if (n < 1)
         return false;
-    int left = 0, right = n-1;
+    int left = 0, right = n - 1;
 
     // Call and return value of recursive binary serach function
     return bisearch(value, values, left, right, n);
-
-    /*// Backup: linear search function
-    for(int i = 0; i < n; i++)
-    {
-        if (value == values[i])
-            return true;
-    }*/
 }
 
 /**
@@ -60,7 +51,6 @@ bool bisearch(int value, int values[], int left, int right, int n)
     return bisearch(value, values, left, right, n);
 }
 
-
 /**
  * Sorts array of n values with selection sort.
  */
@@ -79,7 +69,7 @@ void sort(int values[], int n)
     int k = 0;
     for (int i = 0; i < n; i++)
     {
-        for ( ; k < MAX; k++)
+        for (; k < MAX; k++)
         {
             if (count[k] > 0)
             {
