@@ -8,15 +8,15 @@
 
 int main(void)
 {
+    printf("O hai! ");
+
     float change;
 
     // Ask user for non-negative float input
     do
     {
-        printf("Change owed: ");
-        change = get_float();
-    }
-    while (change < 0);
+        change = get_float("How much change is owed?\n");
+    } while (change < 0);
 
     // Convert dollar value into cents
     int cent = round(100 * change);
@@ -25,13 +25,13 @@ int main(void)
     int size[4] = {Q, D, N, P};
 
     // Calculate number of coins until amount is zero
-    int coin = 0, i = 0;
+    int coins = 0, i = 0;
     while (cent)
     {
         // Start fitting largest coin size, increment coin number
-        coin = coin + floor(cent / size[i]);
+        coins = coins + floor(cent / size[i]);
         cent = cent % size[i];
         i++;
     }
-    printf("%i\n", coin);
+    printf("%i\n", coins);
 }
