@@ -51,19 +51,21 @@ def buy():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        symbol, shares = request.form.values()
+        symbol, quantity_raw = request.form.values()
 
         # Ensure any symbol was submitted
         if not symbol:
             return apology("must provide symbol", 403)
 
-        # Ensure any positive number of shares was submitted
-        if shares < 1:
-            return apology("must provide at least one share", 403)
-
         # Ensure integer number was submitted
-        if not isinstance(shares, int):
-            return apology("must provide whole numbers for shares")
+        try:
+            quantity_converted = int(quantity_raw)
+        except:
+            return apology("must provide whole numbers for shares", 403)
+
+        # Ensure any positive number of shares was submitted
+        if quantity_converted < 1:
+            return apology("must provide at least one share", 403)
 
         # Look up symbol on IEX
         quote = lookup(symbol)
@@ -72,12 +74,47 @@ def buy():
         if not quote:
             return apology("symbol not found", 404)
 
-        # Calculate total value of purchase
-        price = quote.get("price")
-        total = price * shares
+        # Ensure float number was returned for price by api
+        name, price_raw, symbol = quote.values()
+        try:
+            price_converted = float(price_raw)
+        except:
+            return apology("there was a problem with finding your symbol", 404)
+
+        # Round price to 4 digits and calculate total value of purchase
+        price_rounded = round(price_converted, 4)
+        total = price_rounded * quantity_converted
+
+        # Query database for users's cash
+        user_id = session["user_id"]
+        rows = db.execute("SELECT * FROM users WHERE id = :id", id=user_id)
+
+        # Check if user has enough cash for purchase
+        cash = rows[0]["cash"]
+        cash_remaining = cash - total
+        if not (cash_remaining >= 0):
+            return apology("not enough cash for purchase", 403)
+
+        # Insert transaction into database
+        db.execute(
+            "INSERT INTO transactions (action, symbol, quantity, price, idUser) VALUES ('buy', :symbol, :quantity, :price, :idUser)",
+            symbol=symbol,
+            quantity=quantity_converted,
+            price=price_rounded,
+            idUser=user_id,
+        )
+
+        # Update user's cash
+        db.execute(
+            "Update users SET cash = :cash WHERE id = :id",
+            cash=cash_remaining,
+            id=user_id,
+        )
 
         # Create success notification
-        flash(f"Successfully purchased {shares} shares of {symbol}")
+        flash(
+            f"Successfully purchased {quantity_converted} {symbol} shares for {price_rounded} per share."
+        )
 
         # Redirect user to home page
         return redirect("/")
@@ -214,18 +251,18 @@ def register():
         hash = generate_password_hash(password)
 
         # Insert user to database
-        id = db.execute(
+        user_id = db.execute(
             "INSERT INTO users (username, hash) VALUES (:username, :hash)",
             username=username,
             hash=hash,
         )
 
         # Check if username already exists
-        if not id:
+        if not user_id:
             return apology("username already taken", 403)
 
         # Skip login and directly remember registered user
-        session["user_id"] = id
+        session["user_id"] = user_id
 
         # Create success notification
         flash("Successfully registered.")
