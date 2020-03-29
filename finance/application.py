@@ -101,7 +101,8 @@ def buy():
 
         # Insert transaction into database
         db.execute(
-            "INSERT INTO transactions (action, symbol, quantity, price, idUser) VALUES ('buy', :symbol, :quantity, :price, :idUser)",
+            "INSERT INTO transactions (action, symbol, quantity, price, idUser)"
+            " VALUES ('buy', :symbol, :quantity, :price, :idUser)",
             symbol=symbol,
             quantity=quantity_converted,
             price=price_rounded,
@@ -110,9 +111,7 @@ def buy():
 
         # Update user's cash
         db.execute(
-            "Update users SET cash = :cash WHERE id = :id",
-            cash=cash_remaining,
-            id=user_id,
+            "Update users SET cash = :cash WHERE id = :id", cash=cash_remaining, id=user_id,
         )
 
         # Create success notification
@@ -161,14 +160,11 @@ def login():
 
         # Query database for username
         rows = db.execute(
-            "SELECT * FROM users WHERE username = :username",
-            username=request.form.get("username"),
+            "SELECT * FROM users WHERE username = :username", username=request.form.get("username"),
         )
 
         # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(
-            rows[0]["hash"], request.form.get("password")
-        ):
+        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
             return apology("invalid username and/or password", 401)
 
         # Remember which user has logged in
@@ -218,9 +214,7 @@ def quote():
 
         # Render diplay template with quote
         name, price, symbol = quote.values()
-        return render_template(
-            "display.html.j2", name=name, price=usd(price), symbol=symbol
-        )
+        return render_template("display.html.j2", name=name, price=usd(price), symbol=symbol)
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
