@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, lookup, usd
+from helpers import apology, select_user_cash_from_db, login_required, lookup, usd
 
 # Configure application
 app = Flask(__name__)
@@ -64,7 +64,7 @@ def buy():
         # Ensure integer number was submitted
         try:
             quantity_converted = int(quantity_raw)
-        except:
+        except ValueError:
             return apology("must provide whole numbers for shares", 403)
 
         # Ensure any positive number of shares was submitted
@@ -82,7 +82,7 @@ def buy():
         name, price_raw, symbol = quote.values()
         try:
             price_converted = float(price_raw)
-        except:
+        except ValueError:
             return apology("there was a problem with finding your symbol", 404)
 
         # Round price to 4 digits and calculate total value of purchase
@@ -91,18 +91,17 @@ def buy():
 
         # Query database for users's cash
         user_id = session["user_id"]
-        rows = db.execute("SELECT * FROM users WHERE id = :id", id=user_id)
+        cash = select_user_cash_from_db(db, user_id)
 
         # Check if user has enough cash for purchase
-        cash = rows[0]["cash"]
         cash_remaining = cash - total
         if not (cash_remaining >= 0):
             return apology("not enough cash for purchase", 403)
 
         # Insert transaction into database
         db.execute(
-            "INSERT INTO transactions (action, symbol, quantity, price, idUser)"
-            " VALUES ('buy', :symbol, :quantity, :price, :idUser)",
+            "INSERT INTO transactions (symbol, quantity, price, idUser)"
+            " VALUES (:symbol, :quantity, :price, :idUser)",
             symbol=symbol,
             quantity=quantity_converted,
             price=price_rounded,
@@ -125,12 +124,6 @@ def buy():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("buy.html.j2")
-
-
-@app.route("/check", methods=["GET"])
-def check():
-    """Return true if username available, else false, in JSON format"""
-    return jsonify("TODO")
 
 
 @app.route("/history")
@@ -165,7 +158,7 @@ def login():
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            return apology("invalid username and/or password", 401)
+            return apology("invalid username and/or password", 403)
 
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
@@ -214,7 +207,7 @@ def quote():
 
         # Render diplay template with quote
         name, price, symbol = quote.values()
-        return render_template("display.html.j2", name=name, price=usd(price), symbol=symbol)
+        return render_template("quoted.html.j2", name=name, price=usd(price), symbol=symbol)
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:

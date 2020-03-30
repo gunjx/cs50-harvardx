@@ -75,3 +75,9 @@ def lookup(symbol):
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+
+
+def select_user_cash_from_db(db, id):
+    """Query users table for user's cash with user's id from session storage"""
+    rows = db.execute("SELECT cash FROM users WHERE id = :id", id=id)
+    return rows[0]
